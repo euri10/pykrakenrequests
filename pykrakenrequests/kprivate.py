@@ -1,0 +1,2 @@
+def kprivate():
+    pass

@@ -1,0 +1,1 @@
+PROXY = {'proxies': {"https": "https://user:pass@proxy.adress:proxyport"}}
