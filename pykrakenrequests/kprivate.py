@@ -1,2 +1,2 @@
-def kprivate():
+def kprivate(client, catPrivate):
     pass

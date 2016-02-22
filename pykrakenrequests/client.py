@@ -155,8 +155,12 @@ class Client(object):
 
             # Jitter this value by 50% and pause.
             time.sleep(delay_seconds * (random.random() + 0.5))
-
-        authed_url = url+params
+        if type(params) is dict:
+            params = sorted(params.items())
+        else:
+            params = params[:] # Take a copy.
+        path = "?".join([url, urlencode_params(params)])
+        authed_url = path
 
         # Default to the client-level self.requests_kwargs, with method-level
         # requests_kwargs arg overriding.
@@ -199,16 +203,18 @@ class Client(object):
         body = resp.json()
 
         if len(body["error"]):
-            raise pykrakenrequests.exceptions.ApiError
+            raise pykrakenrequests.exceptions.ApiError(resp.status_code, message=body["error"])
         else:
             return body
 
 
 
-from pykrakenrequests.kpublic import kpublic
+from pykrakenrequests.kpublic import kpublic_time
+from pykrakenrequests.kpublic import kpublic_assets
 from pykrakenrequests.kprivate import kprivate
 
-Client.kpublic = kpublic
+Client.kpublic_time = kpublic_time
+Client.kpublic_assets = kpublic_assets
 Client.kprivate = kprivate
 
 
