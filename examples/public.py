@@ -1,7 +1,7 @@
 from pprint import pprint
 
 import pykrakenrequests
-from config import PROXY, API_KEY
+from examples.config import PROXY, API_KEY
 
 client = pykrakenrequests.Client(API_KEY, requests_kwargs=PROXY)
 t = client.kpublic_time()

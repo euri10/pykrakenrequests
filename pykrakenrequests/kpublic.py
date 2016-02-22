@@ -16,7 +16,9 @@ def kpublic_assets(client, aclass=None, asset=None):
         params['asset'] = assetList
     if aclass:
         if aclass is not "currency":
-            raise pykrakenrequests.exception.BadParamterError()
+            raise pykrakenrequests.exceptions.BadParamterError()
     params['info'] = 'info'
     c = client._post("/0/public/Assets", params)
     return c['result']
+
+

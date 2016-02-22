@@ -9,13 +9,18 @@ from datetime import datetime
 from datetime import timedelta
 import hashlib
 import hmac
-from urllib import urlencode
+
 
 import requests
 import random
 import time
 
 import pykrakenrequests
+
+try: # Python 3
+    from urllib.parse import urlencode
+except ImportError: # Python 2
+    from urllib import urlencode
 
 _USER_AGENT = "pykrakenrequests {} (https://github.com/euri10/pykrakenrequests)".format(pykrakenrequests.__version__)
 _DEFAULT_BASE_URL = "https://api.kraken.com"

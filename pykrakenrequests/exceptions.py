@@ -45,3 +45,8 @@ class _RetriableRequest(Exception):
 class _InvalidRequest(Exception):
     """Signifies that the request is invalid."""
     pass
+
+
+class BadParamterError(Exception):
+    """Signifies that the parameter passed is incorrect."""
+    pass
