@@ -15,7 +15,7 @@ class ClientTest(unittest.TestCase):
 
     def test_server_time(self):
         client = pykrakenrequests.Client('superpublickey', requests_kwargs=PROXY)
-        t = client.kpublic('Time')
+        t = client.kpublic_time()
         # t_compare = datetime.strptime(t[1], '%a, %d %b %y %H:%M:%S +0000')
         t_compare = t[0]
         utcnow = time.time()
@@ -23,3 +23,8 @@ class ClientTest(unittest.TestCase):
         delta = t_compare - utcnow
         print(delta)
         self.assertLess(delta, 2)
+
+    def test_aclass(self):
+        client = pykrakenrequests.Client('superpublickey', requests_kwargs=PROXY)
+        t=client.kpublic_assets(asset=['XETH'])
+        self.assertTrue(u'XETH' in t.keys())
