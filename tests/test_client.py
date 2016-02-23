@@ -15,16 +15,20 @@ class ClientTest(unittest.TestCase):
 
     def test_server_time(self):
         client = pykrakenrequests.Client('superpublickey', requests_kwargs=PROXY)
+        utcnow = time.time()
         t = client.kpublic_time()
         # t_compare = datetime.strptime(t[1], '%a, %d %b %y %H:%M:%S +0000')
         t_compare = t[0]
-        utcnow = time.time()
-        print(utcnow)
+        print("t_compare: {} utcnow: {}".format(t_compare, utcnow))
         delta = t_compare - utcnow
-        print(delta)
-        self.assertLess(delta, 2)
+        self.assertLessEqual(abs(delta), 6)
 
-    def test_aclass(self):
+    def test_assets_asset_parameter(self):
         client = pykrakenrequests.Client('superpublickey', requests_kwargs=PROXY)
-        t=client.kpublic_assets(asset=['XETH'])
+        t = client.kpublic_assets(asset=['XETH'])
         self.assertTrue(u'XETH' in t.keys())
+
+    def test_assets_aclass_parameter(self):
+        with self.assertRaises(pykrakenrequests.exceptions.BadParamterError):
+            client = pykrakenrequests.Client('superpublickey', requests_kwargs=PROXY)
+            t = client.kpublic_assets(aclass='mouahahah bad parameter')
