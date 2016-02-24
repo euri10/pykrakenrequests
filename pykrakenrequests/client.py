@@ -30,7 +30,7 @@ _RETRIABLE_STATUSES = set([500, 503, 504])
 class Client(object):
     """Performs requests to the kraken API."""
 
-    def __init__(self, key=None, timeout=None, connect_timeout=None, read_timeout=None,
+    def __init__(self, key=None, private_key=None, timeout=None, connect_timeout=None, read_timeout=None,
                  retry_timeout=60, requests_kwargs=None,
                  queries_per_second=10):
         """
@@ -76,6 +76,7 @@ class Client(object):
             raise ValueError("Must provide API key when creating client.")
 
         self.key = key
+        self.private_key = private_key
 
         if timeout and (connect_timeout or read_timeout):
             raise ValueError("Specify either timeout, or connect_timeout " +
@@ -170,12 +171,16 @@ class Client(object):
 
         # Unicode-objects must be encoded before hashing
         # "API-Sign = Message signature using HMAC-SHA512 of (URI path + SHA256(nonce + POST data)) and base64 decoded secret API key"
-        nonce = int(1000*time.time())
-        encoded = ( str(nonce) + params)
-        message = url + hashlib.sha256(encoded).digest()
+        # nonce = int(1000*time.time())
+        nonce = 1
+        encoded = (str(nonce)+'nonce='+str(nonce) + urlencode(params)).encode()
 
-        signature = hmac.new(base64.b64decode(self.key), message, hashlib.sha512)
+        message = url.encode() + hashlib.sha256(encoded).digest()
+
+        signature = hmac.new(base64.b64decode(self.private_key), message, hashlib.sha512)
         sigdigest = base64.b64encode(signature.digest())
+        toto = sigdigest.decode()
+        print(toto)
         self.requests_kwargs['headers']['API-Sign'] = sigdigest.decode()
 
         # Default to the client-level self.requests_kwargs, with method-level
@@ -228,10 +233,12 @@ class Client(object):
 from pykrakenrequests.kpublic import kpublic_time
 from pykrakenrequests.kpublic import kpublic_assets
 from pykrakenrequests.kprivate import kprivate_getBalance
+from pykrakenrequests.kprivate import kprivate_getTradeBalance
 
 Client.kpublic_time = kpublic_time
 Client.kpublic_assets = kpublic_assets
 Client.kprivate_getBalance = kprivate_getBalance
+Client.kprivate_getTradeBalance = kprivate_getTradeBalance
 
 
 def sign_hmac(secret, payload):
