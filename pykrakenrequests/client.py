@@ -94,7 +94,7 @@ class Client(object):
         self.retry_timeout = timedelta(seconds=retry_timeout)
         self.requests_kwargs = requests_kwargs or {}
         self.requests_kwargs.update({
-            "headers": {"User-Agent": _USER_AGENT},
+            "headers": {"User-Agent": _USER_AGENT, "API-Key": self.key},
             "timeout": self.timeout,
             "verify": True,  # NOTE(cbro): verify SSL certs.
         })
@@ -162,10 +162,21 @@ class Client(object):
             time.sleep(delay_seconds * (random.random() + 0.5))
         if type(params) is dict:
             params = sorted(params.items())
+            path = "?".join([url, urlencode_params(params)])
         else:
             params = params[:] # Take a copy.
-        path = "?".join([url, urlencode_params(params)])
+            path = url
         authed_url = path
+
+        # Unicode-objects must be encoded before hashing
+        # "API-Sign = Message signature using HMAC-SHA512 of (URI path + SHA256(nonce + POST data)) and base64 decoded secret API key"
+        nonce = int(1000*time.time())
+        encoded = ( str(nonce) + params)
+        message = url + hashlib.sha256(encoded).digest()
+
+        signature = hmac.new(base64.b64decode(self.key), message, hashlib.sha512)
+        sigdigest = base64.b64encode(signature.digest())
+        self.requests_kwargs['headers']['API-Sign'] = sigdigest.decode()
 
         # Default to the client-level self.requests_kwargs, with method-level
         # requests_kwargs arg overriding.
@@ -216,11 +227,11 @@ class Client(object):
 
 from pykrakenrequests.kpublic import kpublic_time
 from pykrakenrequests.kpublic import kpublic_assets
-from pykrakenrequests.kprivate import kprivate
+from pykrakenrequests.kprivate import kprivate_getBalance
 
 Client.kpublic_time = kpublic_time
 Client.kpublic_assets = kpublic_assets
-Client.kprivate = kprivate
+Client.kprivate_getBalance = kprivate_getBalance
 
 
 def sign_hmac(secret, payload):

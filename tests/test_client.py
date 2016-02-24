@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import pykrakenrequests
 from pykrakenrequests import client as _client
 import unittest
-from examples.config import PROXY
+from examples.config import PROXY, API_KEY
 
 
 class ClientTest(unittest.TestCase):
@@ -32,3 +32,8 @@ class ClientTest(unittest.TestCase):
         with self.assertRaises(pykrakenrequests.exceptions.BadParamterError):
             client = pykrakenrequests.Client('superpublickey', requests_kwargs=PROXY)
             t = client.kpublic_assets(aclass='mouahahah bad parameter')
+
+    def test_balance(self):
+        client = pykrakenrequests.Client(key=API_KEY, requests_kwargs=PROXY)
+        t = client.kprivate_getBalance()
+        print(t)
