@@ -103,7 +103,7 @@ class Client(object):
         self.queries_per_second = queries_per_second
         self.sent_times = collections.deque("", queries_per_second)
 
-    def _post(self, url, params, first_request_time=None, retry_counter=0,
+    def _post(self, url, params={}, first_request_time=None, retry_counter=0,
               base_url=_DEFAULT_BASE_URL, accepts_clientid=True,
               extract_body=None, requests_kwargs=None):
         """Performs HTTP GET request with credentials, returning the body as
@@ -161,27 +161,22 @@ class Client(object):
 
             # Jitter this value by 50% and pause.
             time.sleep(delay_seconds * (random.random() + 0.5))
+
         if type(params) is dict:
-            params = sorted(params.items())
-            path = "?".join([url, urlencode_params(params)])
+            path = "?".join([url, urlencode_params(sorted(params.items()))])
         else:
-            params = params[:] # Take a copy.
+            # params = params[:] # Take a copy.
             path = url
         authed_url = path
 
         # Unicode-objects must be encoded before hashing
         # "API-Sign = Message signature using HMAC-SHA512 of (URI path + SHA256(nonce + POST data)) and base64 decoded secret API key"
-        # nonce = int(1000*time.time())
-        nonce = 1
-        encoded = (str(nonce)+'nonce='+str(nonce) + urlencode(params)).encode()
-
-        message = url.encode() + hashlib.sha256(encoded).digest()
-
+        params['nonce'] = int(1000*time.time())
+        postdata = urlencode(params)
+        message = url + hashlib.sha256(str(params['nonce'])+postdata).digest()
         signature = hmac.new(base64.b64decode(self.private_key), message, hashlib.sha512)
         sigdigest = base64.b64encode(signature.digest())
-        toto = sigdigest.decode()
-        print(toto)
-        self.requests_kwargs['headers']['API-Sign'] = sigdigest.decode()
+        self.requests_kwargs['headers']['API-Sign'] = sigdigest
 
         # Default to the client-level self.requests_kwargs, with method-level
         # requests_kwargs arg overriding.
@@ -234,11 +229,13 @@ from pykrakenrequests.kpublic import kpublic_time
 from pykrakenrequests.kpublic import kpublic_assets
 from pykrakenrequests.kprivate import kprivate_getBalance
 from pykrakenrequests.kprivate import kprivate_getTradeBalance
+from pykrakenrequests.kprivate import kprivate_getOpenOrders
 
 Client.kpublic_time = kpublic_time
 Client.kpublic_assets = kpublic_assets
 Client.kprivate_getBalance = kprivate_getBalance
 Client.kprivate_getTradeBalance = kprivate_getTradeBalance
+Client.kprivate_getOpenOrders = kprivate_getOpenOrders
 
 
 def sign_hmac(secret, payload):

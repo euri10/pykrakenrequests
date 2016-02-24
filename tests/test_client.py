@@ -42,3 +42,8 @@ class ClientTest(unittest.TestCase):
         client = pykrakenrequests.Client(key=API_KEY,private_key=PRIVATE_KEY, requests_kwargs=PROXY)
         t = client.kprivate_getTradeBalance()
         print(t)
+
+    def test_open_orders(self):
+        client = pykrakenrequests.Client(key=API_KEY,private_key=PRIVATE_KEY, requests_kwargs=PROXY)
+        t = client.kprivate_getOpenOrders(trades=True)
+        print(t)
