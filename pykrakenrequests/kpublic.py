@@ -1,4 +1,5 @@
 import pykrakenrequests
+from pykrakenrequests.convert import commasep
 
 
 def kpublic_time(client):
@@ -6,9 +7,6 @@ def kpublic_time(client):
     return c['result']['unixtime'], c['result']['rfc1123']
 
 
-def commasep(entryList, sep=','):
-    outStr = ''
-    return sep.join(entryList)
 
 def kpublic_assets(client, info='info', aclass=None, asset=None):
     params = {}
