@@ -33,3 +33,16 @@ class ClientTestPublic(unittest.TestCase):
         t = client.kpublic_assetpairs()
         # TODO: find a better test
         self.assertTrue('XXBTZUSD' in t.keys())
+
+    def test_ticker(self):
+        client = pykrakenrequests.Client(API_KEY, PRIVATE_KEY, requests_kwargs=PROXY)
+        t = client.kpublic_ticker(pair=['XETHXXBT'])
+        print(t)
+        self.assertTrue('XETHXXBT' in t.keys())
+
+    def test_OHLC(self):
+        client = pykrakenrequests.Client(API_KEY, PRIVATE_KEY, requests_kwargs=PROXY)
+        t = client.kpublic_OHLC(pair=['XETHXXBT'])
+        print(t)
+        self.assertTrue('XETHXXBT' in t.keys())
+

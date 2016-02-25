@@ -32,3 +32,25 @@ def kpublic_assetpairs(client, info='info', pair=None):
 
     c = client._post("/0/public/AssetPairs", params)
     return c['result']
+
+def kpublic_ticker(client, pair=None):
+    params = {}
+    if pair:
+        params['pair'] = commasep(pair)
+    else:
+        raise pykrakenrequests.exceptions.BadParamterError()
+    c = client._post("/0/public/Ticker", params)
+    return c['result']
+
+def kpublic_OHLC(client, pair=None, interval=1,since=None):
+    params = {}
+    if pair:
+        params['pair'] = commasep(pair)
+    else:
+        raise pykrakenrequests.exceptions.BadParamterError()
+    if interval:
+        params['interval'] = interval
+    if since:
+        params['since'] = since
+    c = client._post("/0/public/OHLC", params)
+    return c['result']
