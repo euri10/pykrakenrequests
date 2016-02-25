@@ -6,19 +6,31 @@ def kpublic_time(client):
     return c['result']['unixtime'], c['result']['rfc1123']
 
 
-def kpublic_assets(client, aclass=None, asset=None):
+def commasep(entryList, sep=','):
+    outStr = ''
+    return sep.join(entryList)
+
+def kpublic_assets(client, info='info', aclass=None, asset=None):
     params = {}
-    assetList = ''
+    if info:
+        params['info'] = info
     if asset:
-        for a in asset:
-            assetList += a+','
-        assetList = assetList[:-1]
-        params['asset'] = assetList
+        params['asset'] = commasep(asset)
     if aclass:
         if aclass is not "currency":
             raise pykrakenrequests.exceptions.BadParamterError()
-    params['info'] = 'info'
     c = client._post("/0/public/Assets", params)
     return c['result']
 
 
+def kpublic_assetpairs(client, info='info', pair=None):
+    params = {}
+    if info not in ['info', 'leverage', 'fees', 'margin']:
+        raise pykrakenrequests.exceptions.BadParamterError()
+    else:
+        params['info'] = info
+    if pair:
+        params['pair'] = commasep(pair)
+
+    c = client._post("/0/public/AssetPairs", params)
+    return c['result']

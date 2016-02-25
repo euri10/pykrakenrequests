@@ -27,3 +27,9 @@ class ClientTestPublic(unittest.TestCase):
         with self.assertRaises(pykrakenrequests.exceptions.BadParamterError):
             client = pykrakenrequests.Client(API_KEY, PRIVATE_KEY, requests_kwargs=PROXY)
             t = client.kpublic_assets(aclass='mouahahah bad parameter')
+
+    def test_assetpairs(self):
+        client = pykrakenrequests.Client(API_KEY, PRIVATE_KEY, requests_kwargs=PROXY)
+        t = client.kpublic_assetpairs()
+        # TODO: find a better test
+        self.assertTrue('XXBTZUSD' in t.keys())

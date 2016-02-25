@@ -195,12 +195,14 @@ class Client(object):
 
 from pykrakenrequests.kpublic import kpublic_time
 from pykrakenrequests.kpublic import kpublic_assets
+from pykrakenrequests.kpublic import kpublic_assetpairs
 from pykrakenrequests.kprivate import kprivate_getBalance
 from pykrakenrequests.kprivate import kprivate_getTradeBalance
 from pykrakenrequests.kprivate import kprivate_getOpenOrders
 
 Client.kpublic_time = kpublic_time
 Client.kpublic_assets = kpublic_assets
+Client.kpublic_assetpairs = kpublic_assetpairs
 Client.kprivate_getBalance = kprivate_getBalance
 Client.kprivate_getTradeBalance = kprivate_getTradeBalance
 Client.kprivate_getOpenOrders = kprivate_getOpenOrders
