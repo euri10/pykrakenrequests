@@ -106,45 +106,7 @@ class Client(object):
     def _post(self, url, params={}, first_request_time=None, retry_counter=0,
               base_url=_DEFAULT_BASE_URL, accepts_clientid=True,
               extract_body=None, requests_kwargs=None):
-        """Performs HTTP GET request with credentials, returning the body as
-        JSON.
 
-        :param url: URL path for the request. Should begin with a slash.
-        :type url: string
-
-        :param params: HTTP GET parameters.
-        :type params: dict or list of key/value tuples
-
-        :param first_request_time: The time of the first request (None if no
-            retries have occurred).
-        :type first_request_time: datetime.datetime
-
-        :param retry_counter: The number of this retry, or zero for first attempt.
-        :type retry_counter: int
-
-        :param base_url: The base URL for the request. Defaults to the Maps API
-            server. Should not have a trailing slash.
-        :type base_url: string
-
-        :param accepts_clientid: Whether this call supports the client/signature
-            params. Some APIs require API keys (e.g. Roads).
-        :type accepts_clientid: bool
-
-        :param extract_body: A function that extracts the body from the request.
-            If the request was not successful, the function should raise a
-            pykrakenrequests.HTTPError or pykrakenrequests.ApiError as appropriate.
-        :type extract_body: function
-
-        :param requests_kwargs: Same extra keywords arg for requests as per
-            __init__, but provided here to allow overriding internally on a
-            per-request basis.
-        :type requests_kwargs: dict
-
-        :raises ApiError: when the API returns an error.
-        :raises Timeout: if the request timed out.
-        :raises TransportError: when something went wrong while trying to
-            exceute a request.
-        """
 
         if not first_request_time:
             first_request_time = datetime.now()
@@ -162,27 +124,33 @@ class Client(object):
             # Jitter this value by 50% and pause.
             time.sleep(delay_seconds * (random.random() + 0.5))
 
-        if type(params) is dict:
-            path = "?".join([url, urlencode_params(sorted(params.items()))])
-        else:
-            # params = params[:] # Take a copy.
-            path = url
-        authed_url = path
+
 
         # Unicode-objects must be encoded before hashing
         # "API-Sign = Message signature using HMAC-SHA512 of (URI path + SHA256(nonce + POST data)) and base64 decoded secret API key"
         params['nonce'] = int(1000*time.time())
+
         postdata = urlencode(params)
-        message = url + hashlib.sha256(str(params['nonce'])+postdata).digest()
-        signature = hmac.new(base64.b64decode(self.private_key), message, hashlib.sha512)
+
+        # Unicode-objects must be encoded before hashing
+        encoded = (str(params['nonce']) + postdata).encode()
+        message = url.encode() + hashlib.sha256(encoded).digest()
+
+        signature = hmac.new(base64.b64decode(self.private_key),message, hashlib.sha512)
         sigdigest = base64.b64encode(signature.digest())
-        self.requests_kwargs['headers']['API-Sign'] = sigdigest
+
+        self.requests_kwargs.update({
+            "headers": {"User-Agent": _USER_AGENT, "API-Key": self.key, "API-Sign": sigdigest.decode()},
+            "timeout": self.timeout,
+            "verify": True,  # NOTE(cbro): verify SSL certs.
+        })
+
 
         # Default to the client-level self.requests_kwargs, with method-level
         # requests_kwargs arg overriding.
         requests_kwargs = dict(self.requests_kwargs, **(requests_kwargs or {}))
         try:
-            resp = requests.post(base_url + authed_url, **requests_kwargs)
+            resp = requests.post(base_url + url,data=params, **requests_kwargs)
         except requests.exceptions.Timeout:
             raise pykrakenrequests.exceptions.Timeout()
         except Exception as e:
