@@ -2,7 +2,7 @@ import pykrakenrequests
 
 
 def kpublic_time(client):
-    c = client._post("/0/public/Time", "")
+    c = client._post("/0/public/Time")
     return c['result']['unixtime'], c['result']['rfc1123']
 
 
