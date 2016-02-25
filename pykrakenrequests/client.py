@@ -198,6 +198,8 @@ from pykrakenrequests.kpublic import kpublic_assetpairs
 from pykrakenrequests.kpublic import kpublic_ticker
 from pykrakenrequests.kpublic import kpublic_OHLC
 from pykrakenrequests.kpublic import kpublic_depth
+from pykrakenrequests.kpublic import kpublic_trades
+from pykrakenrequests.kpublic import kpublic_spread
 
 from pykrakenrequests.kprivate import kprivate_getBalance
 from pykrakenrequests.kprivate import kprivate_getTradeBalance
@@ -209,6 +211,8 @@ Client.kpublic_assetpairs = kpublic_assetpairs
 Client.kpublic_ticker = kpublic_ticker
 Client.kpublic_OHLC = kpublic_OHLC
 Client.kpublic_depth = kpublic_depth
+Client.kpublic_trades = kpublic_trades
+Client.kpublic_spread = kpublic_spread
 
 Client.kprivate_getBalance = kprivate_getBalance
 Client.kprivate_getTradeBalance = kprivate_getTradeBalance

@@ -52,4 +52,14 @@ class ClientTestPublic(unittest.TestCase):
         print(t)
         self.assertTrue('XETHXXBT' in t.keys())
 
+    def test_trades(self):
+        client = pykrakenrequests.Client(API_KEY, PRIVATE_KEY, requests_kwargs=PROXY)
+        t = client.kpublic_trades(pair=['XETHXXBT'])
+        print(t)
+        self.assertTrue('XETHXXBT' in t.keys())
 
+    def test_spread(self):
+        client = pykrakenrequests.Client(API_KEY, PRIVATE_KEY, requests_kwargs=PROXY)
+        t = client.kpublic_spread(pair=['XETHXXBT'])
+        print(t)
+        self.assertTrue('XETHXXBT' in t.keys())

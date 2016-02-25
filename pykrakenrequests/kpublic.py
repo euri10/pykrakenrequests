@@ -66,3 +66,29 @@ def kpublic_depth(client, pair=None, count=None):
 
     c = client._post("/0/public/Depth", params)
     return c['result']
+
+
+def kpublic_trades(client, pair=None, since=None):
+    params = {}
+    if pair:
+        params['pair'] = commasep(pair)
+    else:
+        raise pykrakenrequests.exceptions.BadParamterError()
+    if since:
+        params['count']=since
+
+    c = client._post("/0/public/Trades", params)
+    return c['result']
+
+def kpublic_spread(client, pair=None, since=None):
+    params = {}
+    if pair:
+        params['pair'] = commasep(pair)
+    else:
+        raise pykrakenrequests.exceptions.BadParamterError()
+    if since:
+        params['count']=since
+
+    c = client._post("/0/public/Spread", params)
+    return c['result']
+
