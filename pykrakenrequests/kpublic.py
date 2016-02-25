@@ -54,3 +54,15 @@ def kpublic_OHLC(client, pair=None, interval=1,since=None):
         params['since'] = since
     c = client._post("/0/public/OHLC", params)
     return c['result']
+
+def kpublic_depth(client, pair=None, count=None):
+    params = {}
+    if pair:
+        params['pair'] = commasep(pair)
+    else:
+        raise pykrakenrequests.exceptions.BadParamterError()
+    if count:
+        params['count']=count
+
+    c = client._post("/0/public/Depth", params)
+    return c['result']

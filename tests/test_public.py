@@ -46,3 +46,10 @@ class ClientTestPublic(unittest.TestCase):
         print(t)
         self.assertTrue('XETHXXBT' in t.keys())
 
+    def test_depth(self):
+        client = pykrakenrequests.Client(API_KEY, PRIVATE_KEY, requests_kwargs=PROXY)
+        t = client.kpublic_depth(pair=['XETHXXBT'])
+        print(t)
+        self.assertTrue('XETHXXBT' in t.keys())
+
+

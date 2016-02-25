@@ -1,6 +1,5 @@
 """
-Core client functionality, common across all API requests (including performing
-HTTP requests).
+Core client functionality, common across all API requests (including performing HTTP requests).
 """
 
 import base64
@@ -34,7 +33,7 @@ class Client(object):
                  retry_timeout=60, requests_kwargs=None,
                  queries_per_second=10):
         """
-        :param key: Maps API key.
+        :param key: API key.
         :type key: string
 
         :param timeout: Combined connect and read timeout for HTTP requests, in
@@ -198,6 +197,7 @@ from pykrakenrequests.kpublic import kpublic_assets
 from pykrakenrequests.kpublic import kpublic_assetpairs
 from pykrakenrequests.kpublic import kpublic_ticker
 from pykrakenrequests.kpublic import kpublic_OHLC
+from pykrakenrequests.kpublic import kpublic_depth
 
 from pykrakenrequests.kprivate import kprivate_getBalance
 from pykrakenrequests.kprivate import kprivate_getTradeBalance
@@ -208,6 +208,7 @@ Client.kpublic_assets = kpublic_assets
 Client.kpublic_assetpairs = kpublic_assetpairs
 Client.kpublic_ticker = kpublic_ticker
 Client.kpublic_OHLC = kpublic_OHLC
+Client.kpublic_depth = kpublic_depth
 
 Client.kprivate_getBalance = kprivate_getBalance
 Client.kprivate_getTradeBalance = kprivate_getTradeBalance
