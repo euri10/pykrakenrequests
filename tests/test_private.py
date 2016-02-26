@@ -21,5 +21,10 @@ class ClientTestPrivate(unittest.TestCase):
 
     def test_open_orders(self):
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
-        t = client.kprivate_getOpenOrders(trades=True)
-        print(t)
+        t = client.kprivate_getOpenOrders(trades=False)
+        self.assertTrue('open' in t.keys())
+
+    def test_closed_orders (self):
+        client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
+        t = client.kprivate_getClosedOrders(trades=False)
+        self.assertTrue('closed' in t.keys())

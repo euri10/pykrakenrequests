@@ -21,3 +21,21 @@ def kprivate_getOpenOrders(client, trades=False, userref=None):
         params['userref']= userref
     c = client._post("/0/private/OpenOrders", params)
     return c['result']
+
+def kprivate_getClosedOrders(client, trades=False, userref=None, start=None, end=None, ofs=None, closetime='both'):
+    params = {}
+    if trades:
+        params['trades'] = trades
+    if userref:
+        params['userref']= userref
+    if start:
+        params['start'] = start
+    if end:
+        params['end'] = end
+    if ofs:
+        params['ofs'] = ofs
+    if closetime:
+        params['closetime'] = closetime
+
+    c = client._post("/0/private/ClosedOrders", params)
+    return c['result']
