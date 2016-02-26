@@ -1,4 +1,5 @@
 import pykrakenrequests
+from pykrakenrequests.convert import commasep
 
 def kprivate_getBalance(client):
     c = client._post("/0/private/Balance")
@@ -38,4 +39,16 @@ def kprivate_getClosedOrders(client, trades=False, userref=None, start=None, end
         params['closetime'] = closetime
 
     c = client._post("/0/private/ClosedOrders", params)
+    return c['result']
+
+def kprivate_queryOrders(client, trades=False, userref=None, txid=None):
+    params ={}
+    if trades:
+        params['trades'] = trades
+    if userref:
+        params['userref']= userref
+    if txid:
+        params['txid'] = commasep(txid)
+
+    c = client._post("/0/private/QueryOrders", params)
     return c['result']
