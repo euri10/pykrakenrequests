@@ -30,8 +30,7 @@ asksdf['t'] = 'asks'
 df = bidsdf.append(asksdf)
 df.columns = ['price', 'volume', 'timestamp', 't']
 print(df)
-#TODO : palette that tells its red when col is red and green when col is green
-pal = {x[0]: "r" if x[1] == 'asks' else 'g' for x in df[['price','t']].as_matrix()}
+pal = {x[0]: "r" if x[1] == 'asks' else 'g' for x in df[['price', 't']].as_matrix()}
 print(pal)
 sns.barplot(x='volume', y='price', data=df, orient='h', palette=pal)
 plt.show()
