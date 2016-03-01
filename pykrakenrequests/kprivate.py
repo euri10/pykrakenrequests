@@ -85,3 +85,13 @@ def kprivate_queryTrades(client, txid=None, trades=False):
         params['trades'] = trades
     c = client._post("/0/private/QueryTrades", params)
     return c['result']
+
+def kprivate_openPositions(client, txid=None, docalcs=False):
+    params = {}
+    if txid and isinstance(txid, list):
+        params['txid'] = commasep(txid)
+    if docalcs:
+        params['docalcs'] = docalcs
+
+    c = client._post("/0/private/OpenPositions", params)
+    return c['result']

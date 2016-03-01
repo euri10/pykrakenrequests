@@ -40,3 +40,10 @@ class ClientTestPrivate(unittest.TestCase):
         t = client.kprivate_queryTrades(trades=False)
         self.assertTrue('count' in t.keys())
 
+
+    def test_openPositions(self):
+        client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
+        t = client.kprivate_openPositions()
+        # TODO find a better test
+        self.assertIsInstance(t, dict)
+
