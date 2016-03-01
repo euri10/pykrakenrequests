@@ -60,3 +60,9 @@ class ClientTestPrivate(unittest.TestCase):
         # TODO find a better test
         self.assertTrue('count' in t.keys())
 
+    def test_tradeVolume(self):
+        client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
+        t = client.kprivate_tradeVolume()
+        # TODO find a better test
+        self.assertTrue('count' in t.keys())
+

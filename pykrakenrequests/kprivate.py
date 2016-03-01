@@ -124,3 +124,14 @@ def kprivate_queryLedgers(client, id=None):
 
     c = client._post("/0/private/Ledgers")
     return c['result']
+
+def kprivate_tradeVolume(client,pair = None, feeinfo=None):
+    params = {}
+    if pair:
+        params['pair'] = commasep(pair)
+    if feeinfo:
+        params['fee-info'] = feeinfo
+
+
+    c = client._post("/0/private/Ledgers")
+    return c['result']
