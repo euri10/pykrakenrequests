@@ -9,22 +9,22 @@ from datetime import timedelta
 import hashlib
 import hmac
 
-
 import requests
 import random
 import time
 
 import pykrakenrequests
 
-try: # Python 3
+try:  # Python 3
     from urllib.parse import urlencode
-except ImportError: # Python 2
+except ImportError:  # Python 2
     from urllib import urlencode
 
 _USER_AGENT = "pykrakenrequests {} (https://github.com/euri10/pykrakenrequests)".format(pykrakenrequests.__version__)
 _DEFAULT_BASE_URL = "https://api.kraken.com"
 
 _RETRIABLE_STATUSES = set([500, 503, 504])
+
 
 class Client(object):
     """Performs requests to the kraken API."""
@@ -106,7 +106,6 @@ class Client(object):
               base_url=_DEFAULT_BASE_URL, accepts_clientid=True,
               extract_body=None, requests_kwargs=None):
 
-
         if not first_request_time:
             first_request_time = datetime.now()
 
@@ -123,11 +122,9 @@ class Client(object):
             # Jitter this value by 50% and pause.
             time.sleep(delay_seconds * (random.random() + 0.5))
 
-
-
         # Unicode-objects must be encoded before hashing
         # "API-Sign = Message signature using HMAC-SHA512 of (URI path + SHA256(nonce + POST data)) and base64 decoded secret API key"
-        params['nonce'] = int(1000*time.time())
+        params['nonce'] = int(1000 * time.time())
 
         postdata = urlencode(params)
 
@@ -135,7 +132,7 @@ class Client(object):
         encoded = (str(params['nonce']) + postdata).encode()
         message = url.encode() + hashlib.sha256(encoded).digest()
 
-        signature = hmac.new(base64.b64decode(self.private_key),message, hashlib.sha512)
+        signature = hmac.new(base64.b64decode(self.private_key), message, hashlib.sha512)
         sigdigest = base64.b64encode(signature.digest())
 
         self.requests_kwargs.update({
@@ -144,12 +141,11 @@ class Client(object):
             "verify": True,  # NOTE(cbro): verify SSL certs.
         })
 
-
         # Default to the client-level self.requests_kwargs, with method-level
         # requests_kwargs arg overriding.
         requests_kwargs = dict(self.requests_kwargs, **(requests_kwargs or {}))
         try:
-            resp = requests.post(base_url + url,data=params, **requests_kwargs)
+            resp = requests.post(base_url + url, data=params, **requests_kwargs)
         except requests.exceptions.Timeout:
             raise pykrakenrequests.exceptions.Timeout()
         except Exception as e:
@@ -191,7 +187,6 @@ class Client(object):
             return body
 
 
-
 from pykrakenrequests.kpublic import kpublic_time
 from pykrakenrequests.kpublic import kpublic_assets
 from pykrakenrequests.kpublic import kpublic_assetpairs
@@ -206,6 +201,7 @@ from pykrakenrequests.kprivate import kprivate_getTradeBalance
 from pykrakenrequests.kprivate import kprivate_getOpenOrders
 from pykrakenrequests.kprivate import kprivate_getClosedOrders
 from pykrakenrequests.kprivate import kprivate_tradesHistory
+from pykrakenrequests.kprivate import kprivate_queryTrades
 
 Client.kpublic_time = kpublic_time
 Client.kpublic_assets = kpublic_assets
@@ -221,6 +217,8 @@ Client.kprivate_getTradeBalance = kprivate_getTradeBalance
 Client.kprivate_getOpenOrders = kprivate_getOpenOrders
 Client.kprivate_getClosedOrders = kprivate_getClosedOrders
 Client.kprivate_tradesHistory = kprivate_tradesHistory
+Client.kprivate_queryTrades = kprivate_queryTrades
+
 
 def sign_hmac(secret, payload):
     """Returns a base64-encoded HMAC-SHA1 signature of a given string.
@@ -259,6 +257,8 @@ def urlencode_params(params):
 
 try:
     unicode
+
+
     # NOTE(cbro): `unicode` was removed in Python 3. In Python 3, NameError is
     # raised here, and caught below.
 
@@ -277,4 +277,3 @@ except NameError:
         """(Python 3) No-op."""
         # urlencode in Python 3 handles all the types we are passing it.
         return value
-

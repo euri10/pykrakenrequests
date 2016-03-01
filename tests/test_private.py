@@ -33,3 +33,10 @@ class ClientTestPrivate(unittest.TestCase):
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
         t = client.kprivate_tradesHistory(trades=False)
         self.assertTrue('count' in t.keys())
+
+
+    def test_queryTrades(self):
+        client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
+        t = client.kprivate_queryTrades(trades=False)
+        self.assertTrue('count' in t.keys())
+
