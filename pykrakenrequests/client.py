@@ -204,6 +204,7 @@ from pykrakenrequests.kprivate import kprivate_tradesHistory
 from pykrakenrequests.kprivate import kprivate_queryTrades
 from pykrakenrequests.kprivate import kprivate_openPositions
 from pykrakenrequests.kprivate import kprivate_getLedgers
+from pykrakenrequests.kprivate import kprivate_queryLedgers
 
 Client.kpublic_time = kpublic_time
 Client.kpublic_assets = kpublic_assets
@@ -222,6 +223,7 @@ Client.kprivate_tradesHistory = kprivate_tradesHistory
 Client.kprivate_queryTrades = kprivate_queryTrades
 Client.kprivate_openPositions = kprivate_openPositions
 Client.kprivate_getLedgers = kprivate_getLedgers
+Client.kprivate_queryLedgers = kprivate_queryLedgers
 
 
 def sign_hmac(secret, payload):

@@ -86,6 +86,7 @@ def kprivate_queryTrades(client, txid=None, trades=False):
     c = client._post("/0/private/QueryTrades", params)
     return c['result']
 
+
 def kprivate_openPositions(client, txid=None, docalcs=False):
     params = {}
     if txid and isinstance(txid, list):
@@ -95,6 +96,7 @@ def kprivate_openPositions(client, txid=None, docalcs=False):
 
     c = client._post("/0/private/OpenPositions", params)
     return c['result']
+
 
 def kprivate_getLedgers(client, aclass='currency', asset='all', typet='all', start=None, end=None, ofs=None):
     params = {}
@@ -110,6 +112,15 @@ def kprivate_getLedgers(client, aclass='currency', asset='all', typet='all', sta
         params['end'] = end
     if ofs:
         params['ofs'] = ofs
+
+    c = client._post("/0/private/Ledgers")
+    return c['result']
+
+
+def kprivate_queryLedgers(client, id=None):
+    params = {}
+    if id and len(id) <= 20 and isinstance(id, list):
+        params['txid'] = commasep(id)
 
     c = client._post("/0/private/Ledgers")
     return c['result']
