@@ -205,6 +205,7 @@ from pykrakenrequests.kprivate import kprivate_getBalance
 from pykrakenrequests.kprivate import kprivate_getTradeBalance
 from pykrakenrequests.kprivate import kprivate_getOpenOrders
 from pykrakenrequests.kprivate import kprivate_getClosedOrders
+from pykrakenrequests.kprivate import kprivate_tradesHistory
 
 Client.kpublic_time = kpublic_time
 Client.kpublic_assets = kpublic_assets
@@ -219,7 +220,7 @@ Client.kprivate_getBalance = kprivate_getBalance
 Client.kprivate_getTradeBalance = kprivate_getTradeBalance
 Client.kprivate_getOpenOrders = kprivate_getOpenOrders
 Client.kprivate_getClosedOrders = kprivate_getClosedOrders
-
+Client.kprivate_tradesHistory = kprivate_tradesHistory
 
 def sign_hmac(secret, payload):
     """Returns a base64-encoded HMAC-SHA1 signature of a given string.

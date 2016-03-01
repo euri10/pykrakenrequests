@@ -52,3 +52,20 @@ def kprivate_queryOrders(client, trades=False, userref=None, txid=None):
 
     c = client._post("/0/private/QueryOrders", params)
     return c['result']
+
+def kprivate_tradesHistory(client, typet=None, trades=False, start=None, end=None, ofs=None):
+    params={}
+    if typet and typet in ['all', 'any position', 'closed position', 'closing position', 'no position']:
+        # using typet variable as type is reserved, but it need to be type in the params dictionnary
+        params['type'] = typet
+    if trades:
+        params['trades']= trades
+    if start:
+        params['start'] = start
+    if end:
+        params['end'] = end
+    if ofs:
+        params['ofs'] = ofs
+
+    c = client._post("/0/private/TradesHistory", params)
+    return c['result']
