@@ -47,3 +47,10 @@ class ClientTestPrivate(unittest.TestCase):
         # TODO find a better test
         self.assertIsInstance(t, dict)
 
+
+    def test_getLedgers(self):
+        client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
+        t = client.kprivate_getLedgers()
+        # TODO find a better test
+        self.assertTrue('count' in t.keys())
+

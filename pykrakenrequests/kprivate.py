@@ -95,3 +95,21 @@ def kprivate_openPositions(client, txid=None, docalcs=False):
 
     c = client._post("/0/private/OpenPositions", params)
     return c['result']
+
+def kprivate_getLedgers(client, aclass='currency', asset='all', typet='all', start=None, end=None, ofs=None):
+    params = {}
+    if aclass:
+        params['aclass'] = aclass
+    if asset:
+        params['asset'] = asset
+    if typet:
+        params['type'] = typet
+    if start:
+        params['start'] = start
+    if end:
+        params['end'] = end
+    if ofs:
+        params['ofs'] = ofs
+
+    c = client._post("/0/private/Ledgers")
+    return c['result']
