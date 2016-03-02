@@ -125,13 +125,65 @@ def kprivate_queryLedgers(client, id=None):
     c = client._post("/0/private/Ledgers")
     return c['result']
 
-def kprivate_tradeVolume(client,pair = None, feeinfo=None):
+
+def kprivate_tradeVolume(client, pair=None, feeinfo=None):
     params = {}
     if pair:
         params['pair'] = commasep(pair)
     if feeinfo:
         params['fee-info'] = feeinfo
 
-
     c = client._post("/0/private/Ledgers")
     return c['result']
+
+
+ORDER_TYPES_0 = ['market']
+ORDER_TYPES_1 = ['limit', 'stop-loss', 'take-profit', 'trailing-stop']
+ORDER_TYPES_2 = ['stop-loss-profit', 'stop-loss-profit-limit', 'stop-loss-limit', 'take-profit-limit',
+                 'trailing-stop-limit', 'stop-loss-and-limit']
+ORDER_FLAGS = ['viqc', 'fcib', 'fciq', 'nompp', 'post']
+
+
+def kprivate_addOrder(client, pair=None, typeo=None, ordertype=None, price=None, price2=None, volume=None, leverage=None, oflags=None,
+                      starttm=None, expiretm=None, userref=None, validate=None):
+    params = {}
+    if pair:
+        params['pair'] = pair
+    else:
+        raise pykrakenrequests.exceptions.RequiredParameterError('pair')
+    if typeo and typeo in ['buy', 'sell']:
+        params['type'] = typeo
+    else:
+        raise pykrakenrequests.exceptions.RequiredParameterError('typeo')
+    if ordertype and ordertype in (ORDER_TYPES_0 or ORDER_TYPES_1 or ORDER_TYPES_2):
+        params['ordertype'] = ordertype
+    else:
+        raise pykrakenrequests.exceptions.RequiredParameterError('ordertype')
+
+    if ordertype in ORDER_TYPES_0:
+        if price:
+            raise pykrakenrequests.exceptions.BadParamterError('if price is set, ordertype cant be at market')
+    elif ordertype in ORDER_TYPES_1:
+        if price:
+            params['price'] = price
+        else:
+            raise pykrakenrequests.exceptions.RequiredParameterError(
+                'price required for this order type: {}'.format(ordertype))
+    elif ordertype in ORDER_TYPES_2:
+        if price and price2:
+            params['price'] = price
+            params['price2'] = price2
+        else:
+            raise pykrakenrequests.exceptions.RequiredParameterError(
+                'price and price2 required for this order type: {}'.format(ordertype))
+    else:
+        raise pykrakenrequests.exceptions.BadParamterError(
+            'ordertype: {} not allowed, it should be in {} or {} or {}'.format(ordertype, ORDER_TYPES_0, ORDER_TYPES_1,
+                                                                               ORDER_TYPES_2))
+    if volume:
+        params['volume'] = volume
+    else:
+        raise pykrakenrequests.exceptions.RequiredParameterError('volume is required')
+
+    if leverage:
+        params['leverage'] = leverage

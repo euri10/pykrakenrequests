@@ -7,7 +7,6 @@ def kpublic_time(client):
     return c['result']['unixtime'], c['result']['rfc1123']
 
 
-
 def kpublic_assets(client, info='info', aclass=None, asset=None):
     params = {}
     if info:
@@ -33,6 +32,7 @@ def kpublic_assetpairs(client, info='info', pair=None):
     c = client._post("/0/public/AssetPairs", params)
     return c['result']
 
+
 def kpublic_ticker(client, pair=None):
     params = {}
     if pair:
@@ -42,7 +42,8 @@ def kpublic_ticker(client, pair=None):
     c = client._post("/0/public/Ticker", params)
     return c['result']
 
-def kpublic_OHLC(client, pair=None, interval=1,since=None):
+
+def kpublic_OHLC(client, pair=None, interval=1, since=None):
     params = {}
     if pair:
         params['pair'] = commasep(pair)
@@ -55,6 +56,7 @@ def kpublic_OHLC(client, pair=None, interval=1,since=None):
     c = client._post("/0/public/OHLC", params)
     return c['result']
 
+
 def kpublic_depth(client, pair=None, count=None):
     params = {}
     if pair:
@@ -62,7 +64,7 @@ def kpublic_depth(client, pair=None, count=None):
     else:
         raise pykrakenrequests.exceptions.BadParamterError()
     if count:
-        params['count']=count
+        params['count'] = count
 
     c = client._post("/0/public/Depth", params)
     return c['result']
@@ -75,10 +77,11 @@ def kpublic_trades(client, pair=None, since=None):
     else:
         raise pykrakenrequests.exceptions.BadParamterError()
     if since:
-        params['count']=since
+        params['count'] = since
 
     c = client._post("/0/public/Trades", params)
     return c['result']
+
 
 def kpublic_spread(client, pair=None, since=None):
     params = {}
@@ -87,8 +90,7 @@ def kpublic_spread(client, pair=None, since=None):
     else:
         raise pykrakenrequests.exceptions.BadParamterError()
     if since:
-        params['count']=since
+        params['count'] = since
 
     c = client._post("/0/public/Spread", params)
     return c['result']
-

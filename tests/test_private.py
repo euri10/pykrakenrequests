@@ -24,6 +24,7 @@ class ClientTestPrivate(unittest.TestCase):
         self.assertTrue('open' in t.keys())
 
     def test_closed_orders(self):
+
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
         t = client.kprivate_getClosedOrders(trades=False)
         self.assertTrue('closed' in t.keys())
@@ -66,3 +67,11 @@ class ClientTestPrivate(unittest.TestCase):
         # TODO find a better test
         self.assertTrue('count' in t.keys())
 
+    def test_order_required_pair(self):
+        with self.assertRaises(pykrakenrequests.exceptions.RequiredParameterError):
+            client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
+            t = client.kprivate_addOrder()
+
+    def test_addOrder(self):
+        client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
+        t = client.kprivate_addOrder(pair='XETHZEUR', typeo='buy', ordertype='market')
