@@ -28,15 +28,13 @@ class ClientTestPrivate(unittest.TestCase):
         t = client.kprivate_closedorders(trades=False)
         self.assertTrue('closed' in t.keys())
 
-    def test_tradesHistory(self):
+    def test_tradesHistory_queryTrades(self):
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
         t = client.kprivate_tradeshistory(trades=False)
         self.assertTrue('count' in t.keys())
-
-    def test_queryTrades(self):
-        client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
-        t = client.kprivate_querytrades(trades=False)
-        self.assertTrue('count' in t.keys())
+        txidexample = [t['trades'].keys()[0]]
+        t1 = client.kprivate_querytrades(txid=txidexample)
+        self.assertTrue(txidexample[0] in t1.keys())
 
     def test_openPositions(self):
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
@@ -44,17 +42,15 @@ class ClientTestPrivate(unittest.TestCase):
         # TODO find a better test
         self.assertIsInstance(t, dict)
 
-    def test_getLedgers(self):
+    def test_getLedgers_and_query(self):
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
         t = client.kprivate_ledgers()
         # TODO find a better test
         self.assertTrue('count' in t.keys())
-
-    def test_queryLedgers(self):
-        client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
-        t = client.kprivate_queryledgers()
+        ledgeriidlist = [t['ledger'].keys()[0]]
+        t1 = client.kprivate_queryledgers(id=ledgeriidlist)
         # TODO find a better test
-        self.assertTrue('count' in t.keys())
+        self.assertTrue(ledgeriidlist[0] in t1.keys())
 
     def test_tradeVolume(self):
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
@@ -70,13 +66,10 @@ class ClientTestPrivate(unittest.TestCase):
     def test_addAndCancelOrder(self):
         # add validate=True just to enter false orders
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
-        t = client.kprivate_addorder(pair='XETHZEUR', typeo='buy', ordertype='limit', price='+5.0', volume=10,)
+        t = client.kprivate_addorder(pair='XETHZEUR', typeo='buy', ordertype='limit', price='+5.0', volume=10, )
         referral_tid = t['txid']
         self.assertTrue('descr' in t.keys())
         openorderidList = client.kprivate_openorders()
         self.assertTrue(referral_tid in openorderidList['open'].keys())
         cancel = client.kprivate_cancelorder(referral_tid)
         self.assertTrue('count' in cancel.keys())
-
-
-

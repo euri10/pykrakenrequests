@@ -122,9 +122,10 @@ def kprivate_ledgers(client, aclass='currency', asset='all', typet='all', start=
 def kprivate_queryledgers(client, id=None):
     params = {}
     if id and len(id) <= 20 and isinstance(id, list):
-        params['txid'] = commasep(id)
-
-    c = client._post("/0/private/QueryLedgers")
+        params['id'] = commasep(id)
+    else:
+        raise pykrakenrequests.exceptions.BadParamterError('error in ids')
+    c = client._post("/0/private/QueryLedgers", params)
     return c['result']
 
 
