@@ -186,7 +186,7 @@ class Client(object):
         else:
             return body
 
-
+# public market data https://www.kraken.com/help/api#public-market-data
 from pykrakenrequests.kpublic import kpublic_time
 from pykrakenrequests.kpublic import kpublic_assets
 from pykrakenrequests.kpublic import kpublic_assetpairs
@@ -196,6 +196,7 @@ from pykrakenrequests.kpublic import kpublic_depth
 from pykrakenrequests.kpublic import kpublic_trades
 from pykrakenrequests.kpublic import kpublic_spread
 
+# private user data https://www.kraken.com/help/api#private-user-data
 from pykrakenrequests.kprivate import kprivate_getBalance
 from pykrakenrequests.kprivate import kprivate_getTradeBalance
 from pykrakenrequests.kprivate import kprivate_getOpenOrders
@@ -206,6 +207,8 @@ from pykrakenrequests.kprivate import kprivate_openPositions
 from pykrakenrequests.kprivate import kprivate_getLedgers
 from pykrakenrequests.kprivate import kprivate_queryLedgers
 from pykrakenrequests.kprivate import kprivate_tradeVolume
+
+# private user trading https://www.kraken.com/help/api#private-user-trading
 from pykrakenrequests.kprivate import kprivate_addOrder
 from pykrakenrequests.kprivate import kprivate_cancelOrder
 
