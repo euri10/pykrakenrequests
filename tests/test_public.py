@@ -42,7 +42,7 @@ class ClientTestPublic(unittest.TestCase):
 
     def test_OHLC(self):
         client = pykrakenrequests.Client(API_KEY, PRIVATE_KEY, requests_kwargs=PROXY)
-        t = client.kpublic_OHLC(pair=['XETHXXBT'])
+        t = client.kpublic_ohlc(pair=['XETHXXBT'])
         print(t)
         self.assertTrue('XETHXXBT' in t.keys())
 

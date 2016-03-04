@@ -98,7 +98,7 @@ def kpublic_ticker(client, pair=None):
     return c['result']
 
 
-def kpublic_OHLC(client, pair=None, interval=1, since=None):
+def kpublic_ohlc(client, pair=None, interval=1, since=None):
     """
     Returns array of pair name and OHLC data
     :param client: the client

@@ -2,12 +2,12 @@ import pykrakenrequests
 from pykrakenrequests.convert import commasep, parseOTime
 
 
-def kprivate_getBalance(client):
+def kprivate_balance(client):
     c = client._post("/0/private/Balance")
     return c['result']
 
 
-def kprivate_getTradeBalance(client, aclass='currency', asset='ZUSD'):
+def kprivate_tradebalance(client, aclass='currency', asset='ZUSD'):
     params = {}
     if aclass:
         params['aclass'] = aclass
@@ -17,7 +17,7 @@ def kprivate_getTradeBalance(client, aclass='currency', asset='ZUSD'):
     return c['result']
 
 
-def kprivate_getOpenOrders(client, trades=False, userref=None):
+def kprivate_openorders(client, trades=False, userref=None):
     params = {}
     if trades:
         params['trades'] = trades
@@ -27,7 +27,7 @@ def kprivate_getOpenOrders(client, trades=False, userref=None):
     return c['result']
 
 
-def kprivate_getClosedOrders(client, trades=False, userref=None, start=None, end=None, ofs=None, closetime='both'):
+def kprivate_closedorders(client, trades=False, userref=None, start=None, end=None, ofs=None, closetime='both'):
     params = {}
     if trades:
         params['trades'] = trades
@@ -46,7 +46,7 @@ def kprivate_getClosedOrders(client, trades=False, userref=None, start=None, end
     return c['result']
 
 
-def kprivate_queryOrders(client, trades=False, userref=None, txid=None):
+def kprivate_queryorders(client, trades=False, userref=None, txid=None):
     params = {}
     if trades:
         params['trades'] = trades
@@ -59,7 +59,7 @@ def kprivate_queryOrders(client, trades=False, userref=None, txid=None):
     return c['result']
 
 
-def kprivate_tradesHistory(client, typet=None, trades=False, start=None, end=None, ofs=None):
+def kprivate_tradeshistory(client, typet=None, trades=False, start=None, end=None, ofs=None):
     params = {}
     if typet and typet in ['all', 'any position', 'closed position', 'closing position', 'no position']:
         # using typet variable as type is reserved, but it need to be type in the params dictionnary
@@ -77,7 +77,7 @@ def kprivate_tradesHistory(client, typet=None, trades=False, start=None, end=Non
     return c['result']
 
 
-def kprivate_queryTrades(client, txid=None, trades=False):
+def kprivate_querytrades(client, txid=None, trades=False):
     params = {}
     if txid and len(txid) <= 20 and isinstance(txid, list):
         params['txid'] = commasep(txid)
@@ -89,7 +89,7 @@ def kprivate_queryTrades(client, txid=None, trades=False):
     return c['result']
 
 
-def kprivate_openPositions(client, txid=None, docalcs=False):
+def kprivate_openpositions(client, txid=None, docalcs=False):
     params = {}
     if txid and isinstance(txid, list):
         params['txid'] = commasep(txid)
@@ -100,7 +100,7 @@ def kprivate_openPositions(client, txid=None, docalcs=False):
     return c['result']
 
 
-def kprivate_getLedgers(client, aclass='currency', asset='all', typet='all', start=None, end=None, ofs=None):
+def kprivate_ledgers(client, aclass='currency', asset='all', typet='all', start=None, end=None, ofs=None):
     params = {}
     if aclass:
         params['aclass'] = aclass
@@ -119,23 +119,23 @@ def kprivate_getLedgers(client, aclass='currency', asset='all', typet='all', sta
     return c['result']
 
 
-def kprivate_queryLedgers(client, id=None):
+def kprivate_queryledgers(client, id=None):
     params = {}
     if id and len(id) <= 20 and isinstance(id, list):
         params['txid'] = commasep(id)
 
-    c = client._post("/0/private/Ledgers")
+    c = client._post("/0/private/QueryLedgers")
     return c['result']
 
 
-def kprivate_tradeVolume(client, pair=None, feeinfo=None):
+def kprivate_tradevolume(client, pair=None, feeinfo=None):
     params = {}
     if pair:
         params['pair'] = commasep(pair)
     if feeinfo:
         params['fee-info'] = feeinfo
 
-    c = client._post("/0/private/Ledgers")
+    c = client._post("/0/private/TradeVolume")
     return c['result']
 
 
@@ -146,7 +146,7 @@ ORDER_TYPES_2 = ['stop-loss-profit', 'stop-loss-profit-limit', 'stop-loss-limit'
 ORDER_FLAGS = ['viqc', 'fcib', 'fciq', 'nompp', 'post']
 
 
-def kprivate_addOrder(client, pair=None, typeo=None, ordertype=None, price=None, price2=None, volume=None,
+def kprivate_addorder(client, pair=None, typeo=None, ordertype=None, price=None, price2=None, volume=None,
                       leverage=None, oflags=None,
                       starttm=None, expiretm=None, userref=None, validate=None):
     params = {}
@@ -206,7 +206,7 @@ def kprivate_addOrder(client, pair=None, typeo=None, ordertype=None, price=None,
     return c['result']
 
 
-def kprivate_cancelOrder(client, txid=None):
+def kprivate_cancelorder(client, txid=None):
     params = {}
     if txid:
         params['txid'] = txid
@@ -215,4 +215,8 @@ def kprivate_cancelOrder(client, txid=None):
 
     c = client._post("/0/private/CancelOrder", params)
     return c['result']
+
+
+def kprivate_depositmethods():
+    pass
 

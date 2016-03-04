@@ -191,48 +191,48 @@ from pykrakenrequests.kpublic import kpublic_time
 from pykrakenrequests.kpublic import kpublic_assets
 from pykrakenrequests.kpublic import kpublic_assetpairs
 from pykrakenrequests.kpublic import kpublic_ticker
-from pykrakenrequests.kpublic import kpublic_OHLC
+from pykrakenrequests.kpublic import kpublic_ohlc
 from pykrakenrequests.kpublic import kpublic_depth
 from pykrakenrequests.kpublic import kpublic_trades
 from pykrakenrequests.kpublic import kpublic_spread
 
 # private user data https://www.kraken.com/help/api#private-user-data
-from pykrakenrequests.kprivate import kprivate_getBalance
-from pykrakenrequests.kprivate import kprivate_getTradeBalance
-from pykrakenrequests.kprivate import kprivate_getOpenOrders
-from pykrakenrequests.kprivate import kprivate_getClosedOrders
-from pykrakenrequests.kprivate import kprivate_tradesHistory
-from pykrakenrequests.kprivate import kprivate_queryTrades
-from pykrakenrequests.kprivate import kprivate_openPositions
-from pykrakenrequests.kprivate import kprivate_getLedgers
-from pykrakenrequests.kprivate import kprivate_queryLedgers
-from pykrakenrequests.kprivate import kprivate_tradeVolume
+from pykrakenrequests.kprivate import kprivate_balance
+from pykrakenrequests.kprivate import kprivate_tradebalance
+from pykrakenrequests.kprivate import kprivate_openorders
+from pykrakenrequests.kprivate import kprivate_closedorders
+from pykrakenrequests.kprivate import kprivate_tradeshistory
+from pykrakenrequests.kprivate import kprivate_querytrades
+from pykrakenrequests.kprivate import kprivate_openpositions
+from pykrakenrequests.kprivate import kprivate_ledgers
+from pykrakenrequests.kprivate import kprivate_queryledgers
+from pykrakenrequests.kprivate import kprivate_tradevolume
 
 # private user trading https://www.kraken.com/help/api#private-user-trading
-from pykrakenrequests.kprivate import kprivate_addOrder
-from pykrakenrequests.kprivate import kprivate_cancelOrder
+from pykrakenrequests.kprivate import kprivate_addorder
+from pykrakenrequests.kprivate import kprivate_cancelorder
 
 Client.kpublic_time = kpublic_time
 Client.kpublic_assets = kpublic_assets
 Client.kpublic_assetpairs = kpublic_assetpairs
 Client.kpublic_ticker = kpublic_ticker
-Client.kpublic_OHLC = kpublic_OHLC
+Client.kpublic_ohlc = kpublic_ohlc
 Client.kpublic_depth = kpublic_depth
 Client.kpublic_trades = kpublic_trades
 Client.kpublic_spread = kpublic_spread
 
-Client.kprivate_getBalance = kprivate_getBalance
-Client.kprivate_getTradeBalance = kprivate_getTradeBalance
-Client.kprivate_getOpenOrders = kprivate_getOpenOrders
-Client.kprivate_getClosedOrders = kprivate_getClosedOrders
-Client.kprivate_tradesHistory = kprivate_tradesHistory
-Client.kprivate_queryTrades = kprivate_queryTrades
-Client.kprivate_openPositions = kprivate_openPositions
-Client.kprivate_getLedgers = kprivate_getLedgers
-Client.kprivate_queryLedgers = kprivate_queryLedgers
-Client.kprivate_tradeVolume = kprivate_tradeVolume
-Client.kprivate_addOrder = kprivate_addOrder
-Client.kprivate_cancelOrder = kprivate_cancelOrder
+Client.kprivate_balance = kprivate_balance
+Client.kprivate_tradebalance = kprivate_tradebalance
+Client.kprivate_openorders = kprivate_openorders
+Client.kprivate_closedorders = kprivate_closedorders
+Client.kprivate_tradeshistory = kprivate_tradeshistory
+Client.kprivate_querytrades = kprivate_querytrades
+Client.kprivate_openpositions = kprivate_openpositions
+Client.kprivate_ledgers = kprivate_ledgers
+Client.kprivate_queryledgers = kprivate_queryledgers
+Client.kprivate_tradevolume = kprivate_tradevolume
+Client.kprivate_addorder = kprivate_addorder
+Client.kprivate_cancelorder = kprivate_cancelorder
 
 
 def sign_hmac(secret, payload):
