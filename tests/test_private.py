@@ -24,30 +24,25 @@ class ClientTestPrivate(unittest.TestCase):
         self.assertTrue('open' in t.keys())
 
     def test_closed_orders(self):
-
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
         t = client.kprivate_getClosedOrders(trades=False)
         self.assertTrue('closed' in t.keys())
-
 
     def test_tradesHistory(self):
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
         t = client.kprivate_tradesHistory(trades=False)
         self.assertTrue('count' in t.keys())
 
-
     def test_queryTrades(self):
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
         t = client.kprivate_queryTrades(trades=False)
         self.assertTrue('count' in t.keys())
-
 
     def test_openPositions(self):
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
         t = client.kprivate_openPositions()
         # TODO find a better test
         self.assertIsInstance(t, dict)
-
 
     def test_getLedgers(self):
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
@@ -73,5 +68,8 @@ class ClientTestPrivate(unittest.TestCase):
             t = client.kprivate_addOrder()
 
     def test_addOrder(self):
+        # add validate=True just to enter False orders
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
-        t = client.kprivate_addOrder(pair='XETHZEUR', typeo='buy', ordertype='market')
+        t = client.kprivate_addOrder(pair='XETHZEUR', typeo='buy', ordertype='limit', price=4.23, volume=10,
+                                     starttm='+5', validate=True)
+        self.assertTrue('descr' in t.keys())

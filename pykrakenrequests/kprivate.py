@@ -1,5 +1,5 @@
 import pykrakenrequests
-from pykrakenrequests.convert import commasep
+from pykrakenrequests.convert import commasep, parseOTime
 
 
 def kprivate_getBalance(client):
@@ -155,7 +155,7 @@ def kprivate_addOrder(client, pair=None, typeo=None, ordertype=None, price=None,
         params['type'] = typeo
     else:
         raise pykrakenrequests.exceptions.RequiredParameterError('typeo')
-    if ordertype and ordertype in (ORDER_TYPES_0 or ORDER_TYPES_1 or ORDER_TYPES_2):
+    if ordertype and ordertype in (ORDER_TYPES_0 + ORDER_TYPES_1 + ORDER_TYPES_2):
         params['ordertype'] = ordertype
     else:
         raise pykrakenrequests.exceptions.RequiredParameterError('ordertype')
@@ -187,3 +187,17 @@ def kprivate_addOrder(client, pair=None, typeo=None, ordertype=None, price=None,
 
     if leverage:
         params['leverage'] = leverage
+
+    if oflags:
+        params['oflags'] = commasep(oflags)
+    if starttm:
+        params['starttm'] = parseOTime(starttm)
+    if expiretm:
+        params['expiretm'] = parseOTime(expiretm)
+    if userref:
+        params['userref'] = userref
+    if validate:
+        params['validate'] = validate
+
+    c = client._post("/0/private/AddOrder", params)
+    return c['result']
