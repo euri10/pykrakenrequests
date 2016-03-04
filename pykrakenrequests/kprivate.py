@@ -81,6 +81,8 @@ def kprivate_queryTrades(client, txid=None, trades=False):
     params = {}
     if txid and len(txid) <= 20 and isinstance(txid, list):
         params['txid'] = commasep(txid)
+    else:
+        raise pykrakenrequests.exceptions.RequiredParameterError('no txid found')
     if trades:
         params['trades'] = trades
     c = client._post("/0/private/QueryTrades", params)
@@ -144,7 +146,8 @@ ORDER_TYPES_2 = ['stop-loss-profit', 'stop-loss-profit-limit', 'stop-loss-limit'
 ORDER_FLAGS = ['viqc', 'fcib', 'fciq', 'nompp', 'post']
 
 
-def kprivate_addOrder(client, pair=None, typeo=None, ordertype=None, price=None, price2=None, volume=None, leverage=None, oflags=None,
+def kprivate_addOrder(client, pair=None, typeo=None, ordertype=None, price=None, price2=None, volume=None,
+                      leverage=None, oflags=None,
                       starttm=None, expiretm=None, userref=None, validate=None):
     params = {}
     if pair:
@@ -201,3 +204,15 @@ def kprivate_addOrder(client, pair=None, typeo=None, ordertype=None, price=None,
 
     c = client._post("/0/private/AddOrder", params)
     return c['result']
+
+
+def kprivate_cancelOrder(client, txid=None):
+    params = {}
+    if txid:
+        params['txid'] = txid
+    else:
+        raise pykrakenrequests.exceptions.RequiredParameterError('transaction id required')
+
+    c = client._post("/0/private/CancelOrder", params)
+    return c['result']
+

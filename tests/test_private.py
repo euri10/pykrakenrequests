@@ -67,9 +67,16 @@ class ClientTestPrivate(unittest.TestCase):
             client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
             t = client.kprivate_addOrder()
 
-    def test_addOrder(self):
-        # add validate=True just to enter False orders
+    def test_addAndCancelOrder(self):
+        # add validate=True just to enter false orders
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
-        t = client.kprivate_addOrder(pair='XETHZEUR', typeo='buy', ordertype='limit', price=4.23, volume=10,
-                                     starttm='+5', validate=True)
+        t = client.kprivate_addOrder(pair='XETHZEUR', typeo='buy', ordertype='limit', price='+5.0', volume=10, validate=True)
+        referral_tid = t['txid']
         self.assertTrue('descr' in t.keys())
+        openorderidList = client.kprivate_getOpenOrders()
+        self.assertTrue(referral_tid in openorderidList['open'].keys())
+        cancel = client.kprivate_cancelOrder(referral_tid)
+        self.assertTrue('count' in cancel.keys())
+
+
+
