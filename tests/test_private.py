@@ -32,7 +32,7 @@ class ClientTestPrivate(unittest.TestCase):
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
         t = client.kprivate_tradeshistory(trades=False)
         self.assertTrue('count' in t.keys())
-        txidexample = [t['trades'].keys()[0]]
+        txidexample = [list(t['trades'].keys())][0]
         t1 = client.kprivate_querytrades(txid=txidexample)
         self.assertTrue(txidexample[0] in t1.keys())
 
@@ -47,7 +47,7 @@ class ClientTestPrivate(unittest.TestCase):
         t = client.kprivate_ledgers()
         # TODO find a better test
         self.assertTrue('count' in t.keys())
-        ledgeriidlist = [t['ledger'].keys()[0]]
+        ledgeriidlist = [list(t['ledger'].keys())[0]]
         t1 = client.kprivate_queryledgers(id=ledgeriidlist)
         # TODO find a better test
         self.assertTrue(ledgeriidlist[0] in t1.keys())
