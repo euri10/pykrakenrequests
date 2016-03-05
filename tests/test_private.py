@@ -56,7 +56,7 @@ class ClientTestPrivate(unittest.TestCase):
         client = pykrakenrequests.Client(key=API_KEY, private_key=PRIVATE_KEY, requests_kwargs=PROXY)
         t = client.kprivate_tradevolume()
         # TODO find a better test
-        self.assertTrue('count' in t.keys())
+        self.assertTrue('currency' in t.keys())
 
     def test_order_required_pair(self):
         with self.assertRaises(pykrakenrequests.exceptions.RequiredParameterError):
